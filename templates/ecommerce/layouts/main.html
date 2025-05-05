@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Elegant E-Commerce{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+            /* Animasi Background Gradient */
+      @keyframes waveEffect {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Gradient Background dengan Animasi */
+      .gradient-background {
+        background: linear-gradient(135deg, #3b82f6, #9333ea, #ec4899);
+        background-size: 400% 400%; /* Ukuran untuk animasi */
+        animation: waveEffect 12s ease infinite; /* Menambahkan animasi */
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100">
+    <!-- HEADER -->
+    <header class="gradient-background text-white shadow-md fixed top-0 left-0 w-full z-10">
+      <div class="max-w-7xl mx-auto p-4 flex justify-between items-center">
+        <!-- Logo -->
+        <div class="text-3xl font-bold text-white">
+          <a href="/" class="hover:text-black transition-colors"
+            >Elegant Shop</a
+          >
+        </div>
+
+        <!-- Menu Navigasi -->
+        <nav class="hidden md:flex space-x-6">
+          <a
+            href="#"
+            class="text-white hover:text-black transition-colors"
+            >Home</a
+          >
+          <a
+            href="#products"
+            class="text-white hover:text-black transition-colors"
+            >Products</a
+          >
+          <a
+            href="#about"
+            class="text-white hover:text-black transition-colors"
+            >About</a
+          >
+          <a
+            href="#contact"
+            class="text-white hover:text-black transition-colors"
+            >Contact</a
+          >
+        </nav>
+
+        <!-- Icon Keranjang Belanja -->
+        <div class="relative">
+          <button id="cart-button" class="text-white hover:text-black">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="h-6 w-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 3h18M3 3l4 18h10l4-18H3z"
+              />
+            </svg>
+          </button>
+          <!-- Badge untuk jumlah item di keranjang -->
+          <span
+            id="cart-badge"
+            class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center -mt-1 -mr-1"
+            >0</span
+          >
+
+          <!-- Dropdown Keranjang -->
+          <div
+            id="cart-dropdown"
+            class="absolute right-0 mt-2 w-60 bg-white shadow-lg rounded-lg hidden z-20"
+          >
+            <div class="p-4 max-h-60 overflow-y-auto">
+              <h3 class="font-semibold text-lg text-gray-800">Your Cart</h3>
+              <div id="cart-items" class="space-y-2 mt-4">
+                <!-- Daftar barang yang ada di keranjang akan muncul di sini -->
+                <p class="text-gray-500">No items in your cart</p>
+              </div>
+              <div class="border-t mt-4 pt-2">
+                <p class="text-gray-800 font-semibold">
+                  Total: <span id="cart-total">Rp. 0</span>
+                </p>
+              </div>
+              <button
+                class="mt-2 bg-red-600 text-white py-2 px-4 w-full rounded"
+                id="reset-cart-button"
+              >
+                Reset Cart
+              </button>
+              <button
+              class="mt-2 bg-blue-600 text-white py-2 px-4 w-full rounded"
+              id="checkout-button"
+              onclick="checkoutCart()"
+            >
+              Checkout
+            </button>
+            </div>
+          </div>
+        </div>
+
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="py-10">
+      {% block content %}
+      <!-- Konten spesifik halaman akan dimasukkan di sini -->
+      {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white py-6 text-center">
+      <p class="text-sm">© 2025 Elegant Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Fungsi untuk menambah item ke dalam keranjang
+      function updateCart(productId, productName, productPrice, productImage) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Cek apakah produk sudah ada dalam keranjang
+        let productIndex = cart.findIndex((item) => item.id === productId);
+        if (productIndex !== -1) {
+          // Jika produk sudah ada, update jumlahnya
+          cart[productIndex].quantity += 1;
+        } else {
+          // Jika produk belum ada, tambahkan produk baru
+          cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            image: productImage,
+            quantity: 1,
+          });
+        }
+
+        // Simpan kembali data keranjang ke localStorage
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Update jumlah barang di badge keranjang
+        updateCartBadge();
+        updateCartDropdown();
+      }
+
+      // Fungsi untuk memperbarui badge jumlah barang di keranjang
+      function updateCartBadge() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        document.getElementById("cart-badge").textContent = totalItems;
+      }
+
+      // Fungsi untuk memperbarui tampilan dropdown keranjang
+      function updateCartDropdown() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let cartItemsContainer = document.getElementById("cart-items");
+        let cartTotal = document.getElementById("cart-total");
+
+        // Clear previous items
+        cartItemsContainer.innerHTML = "";
+
+        if (cart.length > 0) {
+          cart.forEach((item) => {
+            let cartItemElement = document.createElement("div");
+            cartItemElement.classList.add(
+              "flex",
+              "justify-between",
+              "items-center",
+              "text-gray-700"
+            );
+            cartItemElement.innerHTML = `
+                <div class="flex-1">
+                  <p class="font-semibold">${item.name}</p>
+                  <p class="text-sm text-gray-500">Rp. ${item.price} x ${
+              item.quantity
+            }</p>
+                </div>
+                <p class="font-semibold text-gray-800">Rp. ${
+                  item.price * item.quantity
+                }</p>
+                <!-- Tombol Hapus per Produk -->
+                <button class="remove-item text-red-600 text-xs ml-2" data-product-id="${
+                  item.id
+                }">
+                  Hapus
+                </button>
+              `;
+            cartItemsContainer.appendChild(cartItemElement);
+          });
+
+          // Update total price
+          let totalPrice = cart.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+          );
+          cartTotal.textContent = `Rp. ${totalPrice}`;
+        } else {
+          cartItemsContainer.innerHTML =
+            '<p class="text-gray-500">No items in your cart</p>';
+          cartTotal.textContent = "Rp. 0"; // Jika tidak ada barang, tampilkan total Rp. 0
+        }
+      }
+
+      // Fungsi untuk menghapus item dari keranjang
+      function removeItemFromCart(productId) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart = cart.filter((item) => item.id !== productId); // Hapus produk dengan id yang sesuai
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Update jumlah barang di badge dan dropdown setelah penghapusan
+        updateCartBadge();
+        updateCartDropdown();
+      }
+
+      // Fungsi untuk mereset keranjang
+      function resetCart() {
+        localStorage.removeItem("cart"); // Menghapus seluruh keranjang
+        updateCartBadge(); // Update badge
+        updateCartDropdown(); // Update dropdown
+      }
+
+      // Event listener untuk tombol "Add to Cart"
+      document.querySelectorAll(".add-to-cart").forEach((button) => {
+        button.addEventListener("click", (e) => {
+          let productId = e.target.getAttribute("data-product-id");
+          let productName = e.target.getAttribute("data-product-name");
+          let productPrice = e.target.getAttribute("data-product-price");
+          let productImage = e.target.getAttribute("data-product-image");
+          updateCart(
+            productId,
+            productName,
+            parseInt(productPrice),
+            productImage
+          );
+        });
+      });
+
+      // Event listener untuk tombol "Remove" per Produk
+      document
+        .getElementById("cart-items")
+        .addEventListener("click", function (e) {
+          if (e.target.classList.contains("remove-item")) {
+            let productId = e.target.getAttribute("data-product-id");
+            removeItemFromCart(productId);
+          }
+        });
+
+      // Event listener untuk tombol "Reset Cart"
+      document
+        .getElementById("reset-cart-button")
+        .addEventListener("click", function () {
+          resetCart();
+        });
+
+      // Event listener untuk tombol "Cart" untuk toggle dropdown
+      document
+        .getElementById("cart-button")
+        .addEventListener("click", function () {
+          let cartDropdown = document.getElementById("cart-dropdown");
+          cartDropdown.classList.toggle("hidden"); // Toggle visibility of the dropdown
+        });
+
+      // Panggil updateCartBadge() saat pertama kali halaman dimuat
+      updateCartBadge();
+      updateCartDropdown();
+
+      // Fungsi untuk checkout
+      function checkoutCart() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    
+        // Cek jika cart kosong
+        if (cart.length === 0) {
+            alert('Your cart is empty!');
+            return;
+        }
+    
+        // Encode cart data into a valid URL-safe format
+        let cartData = encodeURIComponent(JSON.stringify(cart));
+    
+        // Redirect to checkout page with cart data in query string
+        window.location.href = `/checkout`;
+      }
+    </script>
+  </body>
+</html>

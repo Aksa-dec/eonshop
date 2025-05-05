@@ -1,0 +1,132 @@
+{% extends "ecommerce/layouts/main.html" %} {% block title %}Home - Elegant
+E-Commerce{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="gradient-background text-white text-center py-20">
+  <h1 class="text-5xl font-bold mb-4">Welcome to Elegant Shop</h1>
+  <p class="text-lg mb-8">Discover the finest products for your lifestyle</p>
+  <a
+    href="#products"
+    class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
+    >Shop Now</a
+  >
+</section>
+
+<!-- Product Section -->
+<section id="products" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+    {% if products.items %}
+      {% for product in products.items %}
+      <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+        <img
+          src="{{ product.image_url }}"
+          alt="Product Image"
+          class="w-full h-56 object-cover rounded-md mb-4"
+        />
+        <h3 class="text-xl font-semibold text-gray-800">{{ product.name }}</h3>
+        <p class="text-gray-600">Rp. {{ product.price }}</p>
+        <!-- Button untuk Menambahkan Produk ke Keranjang -->
+        <button
+          class="add-to-cart bg-blue-600 text-white px-4 py-2 rounded mt-4"
+          data-product-id="{{ loop.index }}"
+          data-product-name="{{ product.name }}"
+          data-product-price="{{ product.price }}"
+          data-product-image="{{ product.image_url }}"
+        >
+          Add to Cart
+        </button>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+        <p class="text-gray-600">No products available.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-8 text-center">
+    <div class="flex justify-center space-x-4">
+      {% if products.has_prev %}
+        <a href="{{ url_for('index', page=products.prev_num) }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Previous</a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-300 text-white rounded">Previous</span>
+      {% endif %}
+
+      <span class="px-4 py-2 bg-gray-200 text-gray-600">
+        Page {{ products.page }} of {{ products.pages }}
+      </span>
+
+      {% if products.has_next %}
+        <a href="{{ url_for('index', page=products.next_num) }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-300 text-white rounded">Next</span>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <h2 class="text-4xl font-bold text-gray-800 mb-6">About Elegant Shop</h2>
+    <p class="text-lg text-gray-700 mb-6">
+      At Elegant Shop, we offer a curated selection of high-quality products to elevate your lifestyle. Our mission is to provide you with the finest products at the most affordable prices. From fashion to home essentials, we aim to cater to all your needs with style and elegance.
+    </p>
+    <p class="text-lg text-gray-700 mb-6">
+      Whether you're looking for the latest trends or timeless classics, we have something for everyone. Our team is passionate about bringing you the best shopping experience with excellent customer service, fast shipping, and secure payment options.
+    </p>
+    <a
+      href="#products"
+      class="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-700 transition"
+    >Explore Our Products</a>
+  </div>
+</section>
+
+<section id="contact" class="py-20 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 text-white">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <h2 class="text-4xl font-bold mb-8">Contact Us</h2>
+    <p class="text-lg mb-8">We'd love to hear from you! Reach out to us with any questions or inquiries.</p>
+    
+    <!-- Contact Form -->
+    <form action="#" method="POST" class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+      <div class="mb-4">
+        <label for="name" class="block text-gray-700 font-semibold">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 font-semibold">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="message" class="block text-gray-700 font-semibold">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="4"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        ></textarea>
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+      >
+        Send Message
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

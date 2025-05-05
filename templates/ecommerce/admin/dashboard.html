@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-7xl mx-auto p-6">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Admin Dashboard</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Link ke Daftar Order -->
+      <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Order Management</h3>
+        <p class="text-gray-600">Manage customer orders.</p>
+        <a href="{{ url_for('list_orders') }}" class="mt-4 inline-block text-white bg-blue-600 py-2 px-4 rounded">View Orders</a>
+      </div>
+
+      <!-- Link ke Daftar Produk -->
+      <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Product Management</h3>
+        <p class="text-gray-600">Manage products (add, edit, delete).</p>
+        <a href="{{ url_for('list_products') }}" class="mt-4 inline-block text-white bg-blue-600 py-2 px-4 rounded">View Products</a>
+      </div>
+
+      <!-- Link ke Tambah Produk -->
+      <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Add New Product</h3>
+        <p class="text-gray-600">Add a new product to the store.</p>
+        <a href="{{ url_for('add_product') }}" class="mt-4 inline-block text-white bg-blue-600 py-2 px-4 rounded">Add Product</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

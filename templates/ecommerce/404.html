@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Not Found</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes waveEffect {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    body {
+      background: linear-gradient(45deg, #F3591F, #303030, #F3591F, #303030);
+      background-size: 400% 400%;
+      animation: waveEffect 12s ease infinite;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="bg-white p-12 rounded-lg shadow-2xl w-full sm:w-96 text-center space-y-6">
+      
+      <div>
+        <h1 class="text-8xl font-extrabold text-red-500">404</h1>
+        <p class="text-3xl font-semibold text-gray-700">Not Found</p>
+      </div>
+
+      <p class="text-lg text-gray-500">
+        The page or data you are looking for does not exist.
+      </p>
+
+      <a href="/" class="inline-block px-8 py-3 bg-indigo-600 text-white font-semibold text-lg rounded-lg transform transition duration-300 hover:bg-indigo-700 hover:scale-105 shadow-lg">
+        Return to Home
+      </a>
+
+    </div>
+  </div>
+
+</body>
+</html>

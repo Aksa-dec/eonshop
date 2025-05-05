@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-7xl mx-auto p-6">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Order Details</h2>
+
+    <div class="mb-6">
+      <p><strong>Customer Name:</strong> {{ order.customer_name }}</p>
+      <p><strong>Email:</strong> {{ order.customer_email }}</p>
+      <p><strong>Total Price:</strong> Rp. {{ order.total_price }}</p>
+      <p><strong>Phone:</strong> {{ order.customer_phone }}</p>
+      <p><strong>Address:</strong> {{ order.customer_address }}</p>
+    </div>
+
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Order Items</h3>
+    <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="p-4 text-left">Product</th>
+          <th class="p-4 text-left">Quantity</th>
+          <th class="p-4 text-left">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.order_items %}
+        <tr>
+          <td class="p-4">{{ item.product_name }}</td>
+          <td class="p-4">{{ item.quantity }}</td>
+          <td class="p-4">Rp. {{ item.price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-7xl mx-auto p-6">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Checkout</h2>
+
+    <form id="checkout-form" method="POST" action="/checkout">
+      <div class="mb-6">
+        <label for="name" class="block text-gray-700">Your Name</label>
+        <input type="text" id="name" name="customer_name" required class="w-full p-2 mt-2 border rounded" />
+      </div>
+
+      <div class="mb-6">
+        <label for="email" class="block text-gray-700">Email Address</label>
+        <input type="email" id="email" name="customer_email" required class="w-full p-2 mt-2 border rounded" />
+      </div>
+
+      <div class="mb-6">
+        <label for="phone" class="block text-gray-700">Phone Number</label>
+        <input type="text" id="phone" name="customer_phone" class="w-full p-2 mt-2 border rounded" />
+      </div>
+
+      <div class="mb-6">
+        <label for="address" class="block text-gray-700">Shipping Address</label>
+        <textarea id="address" name="customer_address" class="w-full p-2 mt-2 border rounded" rows="3"></textarea>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800">Your Cart</h3>
+        <div id="cart-items" class="space-y-2 mt-4">
+          <!-- Cart items will be dynamically filled here using JavaScript -->
+          {% for item in cart %}
+          <div class="flex justify-between items-center text-gray-700">
+            <div class="flex-1">
+              <p class="font-semibold">{{ item.name }}</p>
+              <p class="text-sm text-gray-500">Rp. {{ item.price }} x {{ item.quantity }}</p>
+            </div>
+            <p class="font-semibold text-gray-800">Rp. {{ item.price * item.quantity }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="border-t mt-4 pt-2">
+        <p class="text-gray-800 font-semibold">Total: <span id="total-price">Rp. {{ total_price }}</span></p>
+      </div>
+
+      <input type="hidden" id="cart-data" name="cart_data" value="{{ cart | tojson }}" />
+
+      <button type="submit" class="mt-4 bg-blue-600 text-white py-2 px-4 rounded w-full">Place Order</button>
+    </form>
+  </div>
+  <script>
+    // Load cart from localStorage and display it
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalPriceElement = document.getElementById('total-price');
+    const cartDataInput = document.getElementById('cart-data');
+
+    let totalPrice = 0;
+
+    cart.forEach(item => {
+      const cartItem = document.createElement('div');
+      cartItem.classList.add('flex', 'justify-between', 'items-center', 'text-gray-700');
+      cartItem.innerHTML = `
+        <div class="flex-1">
+          <p class="font-semibold">${item.name}</p>
+          <p class="text-sm text-gray-500">Rp. ${item.price} x ${item.quantity}</p>
+        </div>
+        <p class="font-semibold text-gray-800">Rp. ${item.price * item.quantity}</p>
+      `;
+      cartItemsContainer.appendChild(cartItem);
+
+      totalPrice += item.price * item.quantity;
+    });
+
+    totalPriceElement.textContent = `Rp. ${totalPrice}`;
+    cartDataInput.value = JSON.stringify(cart); // Pass cart data to server
+  </script>
+</body>
+</html>

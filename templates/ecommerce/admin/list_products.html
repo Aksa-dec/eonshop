@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product List</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-7xl mx-auto p-6">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Product List</h2>
+
+    <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="p-4 text-left">Product Name</th>
+          <th class="p-4 text-left">Price</th>
+          <th class="p-4 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td class="p-4">{{ product.name }}</td>
+          <td class="p-4">Rp. {{ product.price }}</td>
+          <td class="p-4">
+            <a href="{{ url_for('edit_product', product_id=product.id) }}" class="text-blue-600">Edit</a>
+            |
+            <a href="{{ url_for('delete_product', product_id=product.id) }}" class="text-red-600">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{{ url_for('add_product') }}" class="mt-4 inline-block text-white bg-blue-600 py-2 px-4 rounded">Add Product</a>
+  </div>
+</body>
+</html>

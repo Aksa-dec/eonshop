@@ -1,0 +1,43 @@
+/* Mengatur gaya dasar halaman */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+}
+
+h1 {
+    color: #3498db;
+}
+
+p {
+    color: #333;
+}
+
+/* Navbar Styling */
+nav {
+    background-color: #3498db;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+nav ul li a:hover {
+    background-color: #2980b9;
+}
